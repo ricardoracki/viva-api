@@ -11,6 +11,7 @@ import { fastify } from 'fastify'
 import fastifyCors from '@fastify/cors'
 import fastifySwagger from '@fastify/swagger'
 import fastifySwaggerUi from '@fastify/swagger-ui'
+import { translationsRoutes } from './routes/get-translations-route'
 import { verseRoutes } from './routes/get-verses-route'
 
 const app = fastify({})
@@ -39,6 +40,7 @@ app.register(fastifySwaggerUi, {
 
 app.register(bookRoutes)
 app.register(verseRoutes)
+app.register(translationsRoutes)
 
 app.listen({ port: env.PORT }, (error) => {
   if (error) {

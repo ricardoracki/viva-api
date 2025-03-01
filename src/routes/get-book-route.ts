@@ -7,7 +7,7 @@ export const bookRoutes: FastifyPluginAsyncZod = async (app) => {
     '/books/:translation',
     {
       schema: {
-        summary: 'Get a book',
+        summary: 'Get a book list',
         tags: ['book'],
         params: z.object({
           translation: z.string(),

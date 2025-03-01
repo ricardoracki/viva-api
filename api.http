@@ -1,4 +1,9 @@
 ###
+# Get all translations
+GET http://localhost:3333/translations
+
+
+###
 # Get all
 GET http://localhost:3333/books/nvi
 
