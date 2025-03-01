@@ -18,11 +18,13 @@ export const verseRoutes: FastifyPluginAsyncZod = async (app) => {
           chapter: z.coerce.number().optional(),
           start: z.coerce.number().optional(),
           stop: z.coerce.number().optional(),
+          index: z.coerce.number().optional(),
           amount: z.coerce.number().optional(),
           page: z.coerce.number().optional(),
           perpage: z.coerce.number().optional(),
           find: z.string().optional(),
           id: z.string().optional(),
+          q: z.string().optional(),
         }),
 
         response: {
@@ -40,6 +42,7 @@ export const verseRoutes: FastifyPluginAsyncZod = async (app) => {
                   id: z.string(),
                   name: z.string(),
                   abbrev: z.string(),
+                  translation: z.string(),
                 }),
               })
             ),

@@ -23,10 +23,22 @@ GET http://localhost:3333/verses/nvi?q=mateus
 GET http://localhost:3333/verses/nvi?id=00441672-94fc-4c8f-9fd7-6496f134af84
 
 ###
-# Get verses by book and chapter
-GET http://localhost:3333/verses/nvi?book=teus&chapter=1&start=1&stop=99&perpage=10&page=1
+# Get verses by book and chapter and start/stop index
+GET http://localhost:3333/verses/nvi?book=teus&chapter=1&start=1
+
+###
+# Get verses by book, chapter and index
+GET http://localhost:3333/verses/nvi?book=teus&chapter=1&index=3
+###
+
+# Get verses by find text
+GET http://localhost:3333/verses/nvi?find=mostarda
 
 
 ###
 # Get verses by find text
-GET http://localhost:3333/verses/nvi?find=lice
+GET http://localhost:3333/verses/nvi?book=teus
+
+###
+# Get verses by find text
+GET http://localhost:3333/verses/aa?q=mateus%201:11-12

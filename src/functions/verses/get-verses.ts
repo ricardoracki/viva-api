@@ -3,8 +3,10 @@ import { db } from '../../database/prisma'
 
 type GetVersesParams = {
   book?: string
+  q?: string
   id?: string
   chapter?: number
+  index?: number
   start?: number
   stop?: number
   page?: number
@@ -14,18 +16,38 @@ type GetVersesParams = {
 export async function getVerses(
   {
     book,
+    q,
     id,
     chapter,
     start,
     stop,
+    index,
     find,
     perpage = 10,
     page = 1,
   }: GetVersesParams,
   translation: string
 ) {
-  if (!find && !book && !id)
+  const pattern = /^([a-zA-Z\s]+)\s(\d+):(\d+)(?:-(\d+))?$/
+  if (!find && !book && !id && !q)
     throw new BadRequestError('Book or findQuery is required')
+
+  if (q) {
+    const match = q.match(pattern)
+    if (!match)
+      throw new BadRequestError(
+        'Invalid query format! Use (bookName) (chapter):(start)[-(end)]'
+      )
+    if (!match?.[4]) {
+      index = Number(match?.[3])
+    } else {
+      start = Number(match?.[3])
+      stop = match?.[4] ? Number(match?.[4]) : undefined
+    }
+
+    book = match?.[1]
+    chapter = Number(match?.[2])
+  }
 
   // Query by id
   if (id) {
@@ -50,6 +72,15 @@ export async function getVerses(
         },
         where: {
           content: { contains: find, mode: 'insensitive' },
+          book: {
+            translation,
+            OR: book
+              ? [
+                  { name: { contains: book, mode: 'insensitive' } },
+                  { abbrev: { contains: book, mode: 'insensitive' } },
+                ]
+              : undefined,
+          },
         },
         skip: (page - 1) * perpage,
         take: perpage,
@@ -57,6 +88,15 @@ export async function getVerses(
       await db.verse.count({
         where: {
           content: { contains: find, mode: 'insensitive' },
+          book: {
+            translation,
+            OR: book
+              ? [
+                  { name: { contains: book, mode: 'insensitive' } },
+                  { abbrev: { contains: book, mode: 'insensitive' } },
+                ]
+              : undefined,
+          },
         },
       }),
     ])
@@ -73,14 +113,14 @@ export async function getVerses(
   let indexQuery = undefined
 
   if (start) {
-    if (stop) {
-      indexQuery = {
-        gte: start,
-        lte: stop,
-      }
-    } else {
-      indexQuery = start
+    indexQuery = {
+      gte: start,
+      lte: stop,
     }
+  }
+
+  if (index) {
+    indexQuery = index
   }
 
   const [verses, count] = await Promise.all([
