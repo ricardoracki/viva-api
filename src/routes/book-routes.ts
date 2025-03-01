@@ -1,67 +1,41 @@
-import { FastifyRegister } from "fastify";
-import { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
-import z from "zod";
-import { createBook } from "../functions/books/create-book";
-import { getBooks } from "../functions/books/get-books";
+import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
+import { getBooks } from '../functions/books/get-books'
+import z from 'zod'
 
-export const signRoutes: FastifyPluginAsyncZod = async (app) => {
+export const bookRoutes: FastifyPluginAsyncZod = async (app) => {
   app.get(
-    "/books/:translation",
+    '/books/:translation',
     {
       schema: {
-        summary: "Get a book",
-        tags: ["book"],
+        summary: 'Get a book',
+        tags: ['book'],
         params: z.object({
           translation: z.string(),
         }),
         querystring: z.object({
           id: z.string().optional(),
           q: z.string().optional(),
+          testament: z.enum(['old', 'new']).optional(),
         }),
 
         response: {
-          200: {
+          200: z.object({
             books: z.array(
               z.object({
-                id: z.string(),
                 name: z.string(),
                 abbrev: z.string(),
-                translation: z.string(),
-                testament: z.enum(["old", "new"]),
+                id: z.string(),
+                testament: z.enum(['old', 'new']),
               })
             ),
-          },
+          }),
         },
       },
     },
     async (request, reply) => {
-      const result = await getBooks(request.query, request.params.translation);
+      const result = await getBooks(request.query, request.params.translation)
 
-      return reply.send({ books: result });
+      return reply.send(result)
     }
-  );
-
-  app.post(
-    "/books",
-    {
-      schema: {
-        summary: "Create a book",
-        tags: ["book"],
-        body: z.object({
-          name: z.string(),
-          abbrev: z.string(),
-          translation: z.string(),
-          testament: z.enum(["old", "new"]),
-        }),
-        resposne: {
-          201: null,
-        },
-      },
-    },
-    async (request, reply) => {
-      const result = await createBook(request.body);
-
-      return reply.status(201).send(result);
-    }
-  );
-};
+  )
+}

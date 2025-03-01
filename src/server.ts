@@ -1,46 +1,48 @@
-import fastifyCors from "@fastify/cors";
-import { env } from "./env";
-import { fastify } from "fastify";
 import {
   jsonSchemaTransform,
   serializerCompiler,
   validatorCompiler,
-} from "fastify-type-provider-zod";
-import { errorHandler } from "./error/errorHandler";
-import { signRoutes } from "./routes/sign-routes";
-import fastifySwagger from "@fastify/swagger";
-import fastifySwaggerUi from "@fastify/swagger-ui";
+} from 'fastify-type-provider-zod'
 
-const app = fastify({});
+import { bookRoutes } from './routes/book-routes'
+import { env } from './env'
+import { errorHandler } from './error/errorHandler'
+import { fastify } from 'fastify'
+import fastifyCors from '@fastify/cors'
+import fastifySwagger from '@fastify/swagger'
+import fastifySwaggerUi from '@fastify/swagger-ui'
 
-app.setValidatorCompiler(validatorCompiler);
-app.setSerializerCompiler(serializerCompiler);
-app.setErrorHandler(errorHandler);
+const app = fastify({})
+
+app.setValidatorCompiler(validatorCompiler)
+app.setSerializerCompiler(serializerCompiler)
+app.setErrorHandler(errorHandler)
 
 app.register(fastifyCors, {
-  origin: "*",
-});
+  origin: '*',
+})
 
 app.register(fastifySwagger, {
   openapi: {
     info: {
-      title: "Viva API",
-      version: "0.1",
+      title: 'Viva API',
+      version: '0.1',
     },
   },
   transform: jsonSchemaTransform,
-});
+})
 
 app.register(fastifySwaggerUi, {
-  routePrefix: "/docs",
-});
+  routePrefix: '/docs',
+})
 
-app.register(signRoutes);
+// app.register(signRoutes)
+app.register(bookRoutes)
 
 app.listen({ port: env.PORT }, (error) => {
   if (error) {
-    console.log(error);
+    console.log(error)
   }
 
-  console.log(`Server listening at port ${env.PORT}`);
-});
+  console.log(`Server listening at port ${env.PORT}`)
+})

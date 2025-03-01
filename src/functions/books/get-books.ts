@@ -1,33 +1,38 @@
-import { PgUUID } from "drizzle-orm/pg-core";
-import { db } from "../../drizzle/client";
-import { book } from "../../drizzle/schemas/book";
-import { and, eq, ilike, or } from "drizzle-orm";
+import { Testament } from '@prisma/client'
+import { db } from '../../database/prisma'
 
 type GetBooksParams = {
-  id?: string;
-  q?: string;
-};
-export async function getBooks({ id, q }: GetBooksParams, translation: string) {
-  if (id) {
-    return db
-      .select()
-      .from(book)
-      .where(and(eq(book.id, id), eq(book.translation, translation)));
-  } else if (q) {
-    return db
-      .select()
-      .from(book)
-      .where(
-        and(
-          eq(book.translation, translation),
-          or(
-            ilike(book.name, q),
-            ilike(book.abbrev, q),
-            ilike(book.testament, q)
-          )
-        )
-      );
-  }
+  id?: string
+  q?: string
+  testament?: Testament
+}
+export async function getBooks(
+  { id, q, testament }: GetBooksParams,
+  translation: string
+) {
+  const result = await db.book.findMany({
+    where: {
+      translation,
+      id,
+      testament,
+      OR: q
+        ? [
+            {
+              name: {
+                mode: 'insensitive',
+                contains: q,
+              },
+            },
+            {
+              abbrev: {
+                mode: 'insensitive',
+                contains: q,
+              },
+            },
+          ]
+        : undefined,
+    },
+  })
 
-  return db.select().from(book).where(eq(book.translation, translation));
+  return { books: result }
 }
