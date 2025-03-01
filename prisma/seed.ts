@@ -21,6 +21,7 @@ async function createNVI() {
             content: chapters[j][k],
             index: k,
             bookId: book.id,
+            chapter: j + 1,
           },
         })
       }

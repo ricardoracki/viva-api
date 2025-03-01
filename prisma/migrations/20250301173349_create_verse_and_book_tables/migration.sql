@@ -17,6 +17,7 @@ CREATE TABLE "Verse" (
     "id" TEXT NOT NULL,
     "content" TEXT NOT NULL,
     "index" INTEGER NOT NULL,
+    "chapter" INTEGER NOT NULL,
     "bookId" TEXT NOT NULL,
 
     CONSTRAINT "Verse_pkey" PRIMARY KEY ("id")

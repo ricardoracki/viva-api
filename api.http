@@ -2,19 +2,31 @@
 # Get all
 GET http://localhost:3333/books/nvi
 
-
 ###
 # Get using id
 GET http://localhost:3333/books/nvi?id=10e4243d-447c-4f37-a96b-cf3507006cb3
-
-
 
 ###
 # Get by using query
 GET http://localhost:3333/books/nvi?q=teus
 
-
-
 ###
 # Get by using query
 GET http://localhost:3333/books/nvi?testament=old
+
+###
+# Get verses by book
+GET http://localhost:3333/verses/nvi?q=mateus
+
+###
+# Get verses by id
+GET http://localhost:3333/verses/nvi?id=00441672-94fc-4c8f-9fd7-6496f134af84
+
+###
+# Get verses by book and chapter
+GET http://localhost:3333/verses/nvi?book=teus&chapter=1&start=1&stop=99&perpage=10&page=1
+
+
+###
+# Get verses by find text
+GET http://localhost:3333/verses/nvi?find=lice
