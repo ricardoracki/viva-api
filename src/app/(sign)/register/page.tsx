@@ -66,14 +66,14 @@ export default function Register() {
             )}
           </InputBlock>
           <InputBlock>
-            <InputBlock.Label htmlFor="user">E-mail</InputBlock.Label>
+            <InputBlock.Label htmlFor="email">E-mail</InputBlock.Label>
             <InputBlock.FieldRoot>
               <InputBlock.Field
-                id="user"
+                id="email"
                 placeholder="E-mail"
-                autoComplete="false"
                 type="email"
-                {...register("username")}
+                autoCorrect="false"
+                {...register("email")}
               />
             </InputBlock.FieldRoot>
             {errors.email && (
