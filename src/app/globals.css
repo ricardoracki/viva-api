@@ -1,1 +1,26 @@
 @import "tailwindcss";
+:root {
+  --tw-bg-opacity: 1;
+  --tw-text-opacity: 1;
+  --background: rgba(26, 26, 30, 1);
+}
+
+@keyframe tree-dots {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.text-text {
+  color: rgba(255, 255, 255, var(--tw-text-opacity));
+}
+
+.bg-background {
+  background-color: var(--background);
+}
