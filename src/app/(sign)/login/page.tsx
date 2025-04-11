@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Separator } from "@/components/separato";
 import { Button } from "@/components/button";
 import Link from "next/link";
+import { Container } from "@/components/container";
 
 const formSchema = z.object({
   username: z.string().nonempty("Campo obrigatório").min(1, "Usuário inválido"),
@@ -28,7 +29,7 @@ export default function Login() {
   }
 
   return (
-    <div className="h-screen flex items-center justify-center bg-background  ">
+    <Container center>
       <div className="p-8 rounded shadow-md max-w-96 w-full bg-zinc-800 backdrop-blur-3xl border border-zinc-800/30">
         <form onSubmit={handleSubmit(onSubmit)}>
           <h2 className="text-2xl font-bold mb-6 text-center text-zinc-50">
@@ -87,6 +88,6 @@ export default function Login() {
           <Link href="/register">Não possuo conta</Link>
         </Button>
       </div>
-    </div>
+    </Container>
   );
 }

@@ -5,16 +5,17 @@
   --background: rgba(26, 26, 30, 1);
 }
 
-@keyframe tree-dots {
-  0% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-4px);
-  }
-  100% {
-    transform: translateY(0);
-  }
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+span,
+a,
+button {
+  font-family: "Inter", sans-serif;
 }
 
 .text-text {
