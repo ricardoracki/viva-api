@@ -3,20 +3,30 @@ import { InputBlock } from "@/components/input-block";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye } from "lucide-react";
 import { Separator } from "@/components/separato";
 import { Button } from "@/components/button";
-import { Loading } from "@/components/loading";
 import Link from "next/link";
 
-const formSchema = z.object({
-  username: z.string().nonempty("Campo obrigatório").min(1, "Usuário inválido"),
-  password: z.string().nonempty("Campo obrigatório").min(1, "Senha inválida"),
-});
+const formSchema = z
+  .object({
+    username: z
+      .string()
+      .nonempty("Campo obrigatório")
+      .min(1, "Usuário inválido"),
+    password: z.string().nonempty("Campo obrigatório").min(1, "Senha inválida"),
+    repeatPassword: z
+      .string()
+      .nonempty("Campo obrigatório")
+      .min(1, "Senha inválida"),
+  })
+  .refine((data) => data.password === data.repeatPassword, {
+    path: ["repeatPassword"],
+    message: "As senhas não conferem",
+  });
 
 type FormSchema = z.infer<typeof formSchema>;
 
-export default function Login() {
+export default function Register() {
   const {
     handleSubmit,
     register,
@@ -34,7 +44,7 @@ export default function Login() {
       <div className="p-8 rounded shadow-md max-w-96 w-full bg-zinc-800 backdrop-blur-3xl border border-zinc-800/30">
         <form onSubmit={handleSubmit(onSubmit)}>
           <h2 className="text-2xl font-bold mb-6 text-center text-zinc-50">
-            Acesse sua conta
+            Criar conta
           </h2>
           <InputBlock>
             <InputBlock.Label htmlFor="user">Usuário</InputBlock.Label>
@@ -57,12 +67,6 @@ export default function Login() {
           <InputBlock>
             <div className="flex items-center justify-between">
               <InputBlock.Label htmlFor="password">Senha</InputBlock.Label>
-              <Link
-                href={"#"}
-                className="text-primary font-semibold text-sm opacity-80 hover:opacity-100 transition-opacity"
-              >
-                Esqueci minha senha
-              </Link>
             </div>
             <InputBlock.FieldRoot>
               <InputBlock.Field
@@ -78,14 +82,36 @@ export default function Login() {
               </InputBlock.ErrorMessage>
             )}
           </InputBlock>
+          <InputBlock>
+            <div className="flex items-center justify-between">
+              <InputBlock.Label htmlFor="password">
+                Repita a Senha
+              </InputBlock.Label>
+            </div>
+            <InputBlock.FieldRoot>
+              <InputBlock.Field
+                id="password"
+                {...register("repeatPassword")}
+                type="password"
+                placeholder="Repita sua senha"
+              />
+            </InputBlock.FieldRoot>
+            {errors.repeatPassword && (
+              <InputBlock.ErrorMessage>
+                {errors.repeatPassword?.message}
+              </InputBlock.ErrorMessage>
+            )}
+          </InputBlock>
 
           <Button type="submit" variant="primary">
-            Login
+            Criar Conta
           </Button>
         </form>
 
         <Separator />
-        <Button variant="outline">Não possuo conta</Button>
+        <Button variant="outline" asChild>
+          <Link href="/login">Já possuo conta</Link>
+        </Button>
       </div>
     </div>
   );
