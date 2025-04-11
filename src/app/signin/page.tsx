@@ -7,6 +7,7 @@ import { Eye } from "lucide-react";
 import { Separator } from "@/components/separato";
 import { Button } from "@/components/button";
 import { Loading } from "@/components/loading";
+import Link from "next/link";
 
 const formSchema = z.object({
   username: z.string().nonempty("Campo obrigatório").min(1, "Usuário inválido"),
@@ -54,7 +55,15 @@ export default function Login() {
             )}
           </InputBlock>
           <InputBlock>
-            <InputBlock.Label htmlFor="password">Senha</InputBlock.Label>
+            <div className="flex items-center justify-between">
+              <InputBlock.Label htmlFor="password">Senha</InputBlock.Label>
+              <Link
+                href={"#"}
+                className="text-primary font-semibold text-sm opacity-80 hover:opacity-100 transition-opacity"
+              >
+                Esqueci minha senha
+              </Link>
+            </div>
             <InputBlock.FieldRoot>
               <InputBlock.Field
                 id="password"
