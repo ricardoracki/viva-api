@@ -14,6 +14,7 @@ const formSchema = z
       .nonempty("Campo obrigatório")
       .min(1, "Usuário inválido"),
     password: z.string().nonempty("Campo obrigatório").min(1, "Senha inválida"),
+    email: z.string().email("E-mail inválido"),
     repeatPassword: z
       .string()
       .nonempty("Campo obrigatório")
@@ -40,7 +41,7 @@ export default function Register() {
   }
 
   return (
-    <div className="h-screen flex items-center justify-center bg-background  ">
+    <div className="h-screen flex items-center justify-center bg-background overflow-y-auto">
       <div className="p-8 rounded shadow-md max-w-96 w-full bg-zinc-800 backdrop-blur-3xl border border-zinc-800/30">
         <form onSubmit={handleSubmit(onSubmit)}>
           <h2 className="text-2xl font-bold mb-6 text-center text-zinc-50">
@@ -61,6 +62,23 @@ export default function Register() {
             {errors.username && (
               <InputBlock.ErrorMessage>
                 {errors.username?.message}
+              </InputBlock.ErrorMessage>
+            )}
+          </InputBlock>
+          <InputBlock>
+            <InputBlock.Label htmlFor="user">E-mail</InputBlock.Label>
+            <InputBlock.FieldRoot>
+              <InputBlock.Field
+                id="user"
+                placeholder="E-mail"
+                autoComplete="false"
+                type="email"
+                {...register("username")}
+              />
+            </InputBlock.FieldRoot>
+            {errors.email && (
+              <InputBlock.ErrorMessage>
+                {errors.email?.message}
               </InputBlock.ErrorMessage>
             )}
           </InputBlock>
