@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 :root {
   --tw-bg-opacity: 1;
   --tw-text-opacity: 1;
@@ -14,8 +14,9 @@ h5,
 h6,
 span,
 a,
+li,
 button {
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 .text-text {

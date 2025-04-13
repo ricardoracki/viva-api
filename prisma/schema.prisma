@@ -1,0 +1,44 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Groups {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  color       String   @default("#000")
+  permissions String[] @default([])
+
+  Memberships Memberships[]
+}
+
+model Users {
+  id        String   @id @default(uuid())
+  username  String   @unique
+  password  String
+  name      String
+  email     String   @unique
+  image     String?  @default("")
+  status    String   @default("not-approved")
+  createdAt DateTime @default(now())
+
+  Memberships Memberships[]
+}
+
+model Memberships {
+  user  Users  @relation(fields: [userId], references: [id])
+  Group Groups @relation(fields: [groupId], references: [id])
+
+  userId  String
+  groupId String
+
+  assignedBy String
+  assignedAt DateTime @default(now())
+
+  @@id([userId, groupId])
+}
